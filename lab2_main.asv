@@ -1,0 +1,91 @@
+%% Стандартные функции создания/запуска/инициализации формы 
+function varargout = lab2_main(varargin)
+gui_Singleton = 1;
+gui_State = struct('gui_Name',       mfilename, ...
+                   'gui_Singleton',  gui_Singleton, ...
+                   'gui_OpeningFcn', @lab2_main_OpeningFcn, ...
+                   'gui_OutputFcn',  @lab2_main_OutputFcn, ...
+                   'gui_LayoutFcn',  [] , ...
+                   'gui_Callback',   []);
+if nargin && ischar(varargin{1})
+    gui_State.gui_Callback = str2func(varargin{1});
+end
+
+if nargout
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+else
+    gui_mainfcn(gui_State, varargin{:});
+end
+
+
+function lab2_main_OpeningFcn(hObject, eventdata, handles, varargin)
+handles.output = hObject;
+guidata(hObject, handles);
+
+
+function varargout = lab2_main_OutputFcn(hObject, eventdata, handles) 
+varargout{1} = handles.output;
+
+
+function edit1_Callback(hObject, eventdata, handles)
+
+
+
+function edit1_CreateFcn(hObject, eventdata, handles)
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+function pushbutton1_Callback(hObject, eventdata, handles)
+%% Кнопка нечеткой аппроксимации
+% Получаем диапазон для аппроксимации
+d=str2num(get(handles.edit3,'String'))
+% Получаем колво точек для аппроксимации
+n=str2double(get(handles.edit2,'String'))
+% Значения для построения НС
+dia=d(1):(abs(d(1))+abs(d(2)))/(n-1):d(2)
+% Получаем функцию для аппроксимации
+af=get(handles.edit1,'String')
+% Приводим функцию в встроенному виду
+f=inline(af)
+% Вычисляем выходной диапазон
+
+dy=f()
+return
+% Создаем новую НС типа Сугено
+F=newfis('lab2_fis','sugeno');
+sv=symvar(f);
+
+F=addvar(F,'input',sv{1},[d]);
+F=addvar(F,'output','y',[d]);
+
+for i=1:n   
+     F=addmf(F,'input',1,num2str(i),'gaussmf',[1.5 dia(i)]);
+
+end
+     F=addmf(F,'output',1,'afs','constant',[1.0]);
+
+
+% Сохраняем НС
+writefis(F,'lab2_fis');
+
+
+
+
+function edit2_Callback(hObject, eventdata, handles)
+
+function edit2_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit3_Callback(hObject, eventdata, handles)
+
+function edit3_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

@@ -1,0 +1,39 @@
+[System]
+Name='lab2_fis'
+Type='sugeno'
+Version=2.0
+NumInputs=1
+NumOutputs=1
+NumRules=5
+AndMethod='prod'
+OrMethod='probor'
+ImpMethod='prod'
+AggMethod='sum'
+DefuzzMethod='wtaver'
+
+[Input1]
+Name='x'
+Range=[-5 5]
+NumMFs=5
+MF1='1':'gaussmf',[1 -5]
+MF2='2':'gaussmf',[1 -2.5]
+MF3='3':'gaussmf',[1 0]
+MF4='4':'gaussmf',[1 2.5]
+MF5='5':'gaussmf',[1 5]
+
+[Output1]
+Name='y'
+Range=[30 11.25 5 11.25 30]
+NumMFs=5
+MF1='1':'constant',[30]
+MF2='2':'constant',[11.25]
+MF3='3':'constant',[5]
+MF4='4':'constant',[11.25]
+MF5='5':'constant',[30]
+
+[Rules]
+1, 1 (1) : 1
+2, 2 (1) : 1
+3, 3 (1) : 1
+4, 4 (1) : 1
+5, 5 (1) : 1
